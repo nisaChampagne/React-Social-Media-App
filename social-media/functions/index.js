@@ -11,6 +11,10 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 exports.getScreams = functions.https.onRequest((req, res)=> {
+    if(req.method !== 'GET'){
+        return res.status(400).json({error: 'Method not allowed'})
+    }
+
     admin.firestore().collection('screams').get()
         .then(data => {
             let screams = [];
@@ -25,6 +29,10 @@ exports.getScreams = functions.https.onRequest((req, res)=> {
 })
 
 exports.createScreams = functions.https.onRequest((req, res)=> {
+    if(req.method !== 'POST'){
+        return res.status(400).json({error: 'Method not allowed'})
+    }
+
     const newScream = {
         body: req.body.body,
         userHandle: req.body.userHandle,
