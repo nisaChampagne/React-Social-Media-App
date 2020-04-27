@@ -60,29 +60,4 @@ app.post('/createscreams', (req,res)=> {
 
 })
 
-
-// exports.getScreams = functions.https.onRequest((req, res)=> {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
-
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,HEAD,PUT,OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     if(req.method !== 'GET'){
-//         return res.status(400).json({error: 'Method not allowed'})
-//     }
-
-//     admin.firestore().collection('screams').get()
-//         .then(data => {
-//             let screams = [];
-//             data.forEach(doc => {
-//                 screams.push(doc.data())
-//             })
-//             return res.json(screams);
-//         })
-//         .catch(err => {
-//             console.error(err)
-//         })
-// })
-
-
-
 exports.api = functions.https.onRequest(app);
