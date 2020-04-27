@@ -83,31 +83,6 @@ app.post('/createscreams', (req,res)=> {
 //         })
 // })
 
-// exports.createScreams = functions.https.onRequest((req, res)=> {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
 
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,HEAD,PUT,OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     if(req.method !== 'POST'){
-//         return res.status(400).json({error: 'Method not allowed'})
-//     }
-
-//     const newScream = {
-//         body: req.body.body,
-//         userHandle: req.body.userHandle,
-//         createdAt: admin.firestore.Timestamp.fromDate(new Date())
-//     }
-
-//     admin.firestore().collection('screams').add(newScream)
-//         .then((doc) => {
-//             res.json({message: `document ${doc.id} created successfully` })
-//             return res.json(newScream)
-//         })
-//         .catch((err) => {
-//             res.status(500).json({ error: 'something went wrong'});
-//             console.error(err)
-//         })
-
-// })
 
 exports.api = functions.https.onRequest(app);
