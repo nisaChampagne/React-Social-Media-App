@@ -5,6 +5,20 @@ const app = express()
 
 admin.initializeApp();
 
+var firebaseConfig = {
+    apiKey: "AIzaSyCeIe5gD5_XuIVILvITsj6lrNOLSBngdHw",
+    authDomain: "socialmediaapp-9cf68.firebaseapp.com",
+    databaseURL: "https://socialmediaapp-9cf68.firebaseio.com",
+    projectId: "socialmediaapp-9cf68",
+    storageBucket: "socialmediaapp-9cf68.appspot.com",
+    messagingSenderId: "212491639725",
+    appId: "1:212491639725:web:450a260b6f73eeb50f1f24",
+    measurementId: "G-6RQQJR7NME"
+  };
+
+const firebase = require('firebase')
+firebase.initializeApp(firebaseConfig);
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -61,6 +75,25 @@ app.post('/createscreams', (req,res)=> {
             console.error(err)
         })
 
+})
+
+//signup route
+app.post('/signup', (req,res) => {
+    const newUser = {
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+        handle: req.body.handle,
+    }
+
+    firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+        .then(data => {
+            return res.status(201).json({message: `user ${data.user.uid} signed up successfully!`})
+        })
+        .catch(err => {
+            console.error(err);
+            return res.status(500).json({error: err.code})
+        })
 })
 
 exports.api = functions.https.onRequest(app);
