@@ -168,6 +168,40 @@ app.post('/signup', (req,res) => {
 // login route
 // valid email and no empty email
 // password and confirmPassword the same
+app.post('/login', (req, res)=> {
+    //email and password
+    const user = {
+        email: req.body.email,
+        password: req.body.password
+    };
 
+    let errors = {};
+
+    // checking if input fields are empty
+    if ( isEmpty(newUser.email)){
+        errors.email = "Must not be empty"
+    }
+
+    if (isEmpty(newUser.password)){
+        errors.password = "Must not be empty"
+    }
+
+    if(Object.keys(errors).length > 0){
+        return res.status(400).json(errors)
+    }
+
+    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+        .then(data=> {
+            return data.getIdToken();
+        })
+        .then(token => {
+            return res.json({token})
+        })
+        .catch(err => {
+            console.error(err)
+            return res.status(500).json({error: err.code });
+        })
+
+})
 
 exports.api = functions.https.onRequest(app);
