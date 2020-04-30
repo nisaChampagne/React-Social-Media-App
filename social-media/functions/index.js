@@ -28,6 +28,21 @@ firebase.initializeApp(firebaseConfig);
 
 const db = admin.firestore();
 
+// helper function to check if input is empty
+const  isEmpty = (string)=>{
+    if (string.trim() === ''){// white spaces
+        return true;
+    } else {
+        return false
+    }
+}
+
+// helper to check if email is valid
+// const isEmail = (email) => {
+//     const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     if (email.match(regEx)) return true;
+//     else return false;
+//   };
 
 app.get('/getscreams', (req, res)=> {
     if(req.method !== 'GET'){
@@ -88,6 +103,29 @@ app.post('/signup', (req,res) => {
         handle: req.body.handle,
     }
 
+    let errors = {};
+
+    // checking if input fields are empty
+    if ( isEmpty(newUser.email)){
+        errors.email = "Must not be empty"
+    }
+
+    if (isEmpty(newUser.password)){
+        errors.password = "Must not be empty"
+    }
+
+    if (newUser.password !== newUser.confirmPassword){
+        errors.confirmPassword = "Passwords must match!;"
+    }
+
+    if (isEmpty(newUser.handle)){
+        errors.handle = "Must not be empty"
+    }
+
+    if(Object.keys(errors).length > 0){
+        return res.status(400).json(errors)
+    }
+
     // validate data
     let userToken;
     let userId;
@@ -126,5 +164,10 @@ app.post('/signup', (req,res) => {
             }
         })
 })
+
+// login route
+// valid email and no empty email
+// password and confirmPassword the same
+
 
 exports.api = functions.https.onRequest(app);
