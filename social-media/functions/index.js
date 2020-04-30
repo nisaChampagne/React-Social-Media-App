@@ -178,11 +178,11 @@ app.post('/login', (req, res)=> {
     let errors = {};
 
     // checking if input fields are empty
-    if ( isEmpty(newUser.email)){
+    if ( isEmpty(user.email)){
         errors.email = "Must not be empty"
     }
 
-    if (isEmpty(newUser.password)){
+    if (isEmpty(user.password)){
         errors.password = "Must not be empty"
     }
 
@@ -190,14 +190,16 @@ app.post('/login', (req, res)=> {
         return res.status(400).json(errors)
     }
 
-    firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-        .then(data=> {
-            return data.getIdToken();
+    firebase
+    .auth()
+    .signInWithEmailAndPassword(user.email, user.password)
+        .then((data)=> {
+            return data.user.getIdToken();
         })
-        .then(token => {
+        .then((token) => {
             return res.json({token})
         })
-        .catch(err => {
+        .catch((err) => {
             console.error(err)
             return res.status(500).json({error: err.code });
         })
